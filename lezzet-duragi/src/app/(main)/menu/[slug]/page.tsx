@@ -4,6 +4,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Flame, Star, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { ProductActions } from '@/features/menu/components/ProductActions';
+import { ProductReviews } from '@/features/menu/components/ProductReviews';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -93,18 +95,13 @@ export default async function ProductDetailPage({ params }: PageProps) {
             </div>
           )}
 
-<div className="mt-auto pt-8 border-t border-slate-100">
-             <Button 
-                size="lg" 
-                className="w-full text-lg h-14 rounded-2xl shadow-xl hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300"
-                disabled={!product.isAvailable}
-                variant={product.isAvailable ? "default" : "secondary"}
-             >
-                {product.isAvailable ? 'Sepete Ekle' : 'Tükendi'}
-             </Button>
+          <div className="mt-auto pt-8 border-t border-slate-100">
+             <ProductActions product={product} />
           </div>
         </div>
       </div>
+
+      <ProductReviews product={product} />
     </div>
   );
 }

@@ -68,3 +68,31 @@ export interface BusinessInfo {
   whatsappNumber: string;
   workingHours: WorkingHours;
 }
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  avatar?: string;
+}
+
+export interface Review {
+  id: string;
+  productId: string;
+  userId: string;
+  userName: string;
+  rating: number; // 1-5
+  comment: string;
+  createdAt: string;
+}
+
+export interface Order {
+  id: string;
+  userId: string;
+  items: CartItem[];
+  totalPrice: number;
+  orderType: OrderType;
+  tableNumber?: string;
+  status: 'bekliyor' | 'hazirlaniyor' | 'tamamlandi' | 'iptal';
+  createdAt: string;
+}

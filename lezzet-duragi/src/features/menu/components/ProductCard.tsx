@@ -1,13 +1,14 @@
 'use client';
 
 import Image from 'next/image';
+import { useCart } from '@/features/cart/hooks/useCart';
 import { Product } from '@/types';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Flame, Star } from 'lucide-react';
+import { Flame, Star, Heart } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { useCart } from '@/features/cart/hooks/useCart';
 import { toast } from 'sonner';
 
 interface ProductCardProps {
@@ -16,11 +17,21 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart();
+  const [isFavorite, setIsFavorite] = useState(false);
   const isAvailable = product.isAvailable;
 
   const handleAddToCart = () => {
     addToCart(product, 1);
     toast.success(`${product.name} sepete eklendi!`);
+  };
+
+  const handleToggleFavorite = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // TODO: Backend entegrasyonunda API isteği atılacak
+    setIsFavorite(!isFavorite);
+    toast.success(!isFavorite ? 'Favorilere eklendi!' : 'Favorilerden çıkarıldı');
   };
 
   return (
@@ -41,7 +52,14 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
         </Link>
 
-<div className="absolute top-3 left-3 flex flex-col gap-2">
+        <button 
+          onClick={handleToggleFavorite}
+          className="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-md hover:scale-110 transition-transform"
+        >
+          <Heart className={cn("w-5 h-5 transition-colors", isFavorite ? "fill-red-500 text-red-500" : "text-slate-400")} suppressHydrationWarning />
+        </button>
+
+        <div className="absolute top-3 left-3 flex flex-col gap-2">
           {product.isPopular && (
             <Badge className="bg-amber-500 hover:bg-amber-600 text-white shadow-md border-none flex items-center gap-1">
               <Star className="w-3 h-3 fill-current" suppressHydrationWarning /> Popüler
@@ -55,7 +73,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
       </div>
 
-<div className="flex flex-col flex-grow p-4">
+      <div className="flex flex-col flex-grow p-4">
         <div className="flex justify-between items-start mb-2">
           <Link href={`/menu/${product.slug}`} className="hover:text-slate-900 transition-colors">
             <h3 className="font-bold text-lg text-slate-800 line-clamp-1">{product.name}</h3>

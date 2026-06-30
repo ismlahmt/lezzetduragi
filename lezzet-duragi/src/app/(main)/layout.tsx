@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ShoppingBag, UtensilsCrossed } from 'lucide-react';
 import { mockBusinessInfo } from '@/shared/data/business-info';
+import { HeaderActions } from '@/components/layout/HeaderActions';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -21,10 +22,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
             <Link href="/iletisim" className="hover:text-primary transition-colors">İletişim</Link>
           </nav>
 
-          <Link href="/sepet" className="relative p-4 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl transition-all hover:scale-105 hover:rotate-3 shadow-sm">
-            <ShoppingBag className="w-6 h-6" suppressHydrationWarning />
-            
-          </Link>
+          <HeaderActions />
         </div>
       </header>
 
