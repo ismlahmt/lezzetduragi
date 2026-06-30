@@ -1,5 +1,11 @@
 // --- Menü Kategorileri ----------------------------------------------------
-export type MenuCategory = 'baslangic' | 'ana-yemek' | 'tatli' | 'icecek';
+export type MenuCategory = string;
+
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+}
 
 // --- Ürün -----------------------------------------------------------------
 export interface Product {
@@ -7,13 +13,16 @@ export interface Product {
   slug: string;
   name: string;
   description: string;
-  category: MenuCategory;
+  category?: MenuCategory;
+  categoryId: string;
   price: number;              // TL cinsinden
   image: string;
   isAvailable: boolean;
   isPopular?: boolean;
   allergens?: string[];
   spicyLevel?: 0 | 1 | 2 | 3;
+  rating?: number;
+  reviewCount?: number;
 }
 
 // --- Sepet ----------------------------------------------------------------

@@ -32,11 +32,12 @@ export function ProductCard({ product }: ProductCardProps) {
       <div className="relative h-48 w-full bg-slate-100 overflow-hidden">
         <Link href={`/menu/${product.slug}`}>
           <div className="relative w-full h-full">
-            {/* Gerçek resimler gelene kadar gri bir placeholder zemin tutuyoruz */}
-            <div className="absolute inset-0 bg-slate-200 flex items-center justify-center text-slate-400">
-               <span className="font-medium text-sm">{product.name} Görseli</span>
-            </div>
-            {/* <Image src={product.image} alt={product.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" /> */}
+            <img 
+              src={product.image} 
+              alt={product.name} 
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+              loading="lazy"
+            />
           </div>
         </Link>
         
@@ -44,12 +45,12 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="absolute top-3 left-3 flex flex-col gap-2">
           {product.isPopular && (
             <Badge className="bg-amber-500 hover:bg-amber-600 text-white shadow-md border-none flex items-center gap-1">
-              <Star className="w-3 h-3 fill-current" /> Popüler
+              <Star className="w-3 h-3 fill-current" suppressHydrationWarning /> Popüler
             </Badge>
           )}
           {product.spicyLevel && product.spicyLevel > 0 && (
             <Badge variant="destructive" className="shadow-md flex items-center gap-1">
-              <Flame className="w-3 h-3 fill-current" /> Acılı
+              <Flame className="w-3 h-3 fill-current" suppressHydrationWarning /> Acılı
             </Badge>
           )}
         </div>
@@ -60,6 +61,13 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="flex justify-between items-start mb-2">
           <Link href={`/menu/${product.slug}`} className="hover:text-slate-900 transition-colors">
             <h3 className="font-bold text-lg text-slate-800 line-clamp-1">{product.name}</h3>
+            {product.rating && (
+              <div className="flex items-center text-amber-500 mt-1">
+                <Star className="w-4 h-4 fill-current" suppressHydrationWarning />
+                <span className="text-sm font-semibold ml-1">{product.rating.toFixed(1)}</span>
+                <span className="text-xs text-slate-400 ml-1">({product.reviewCount})</span>
+              </div>
+            )}
           </Link>
           <span className="font-bold text-lg text-slate-900 whitespace-nowrap ml-2">
             {product.price} ₺

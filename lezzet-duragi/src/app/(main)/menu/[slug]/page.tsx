@@ -6,7 +6,7 @@ import { Flame, Star, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
 interface PageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 // SSG için generateStaticParams (Fotoğraf 4 ve 9 kuralı)
@@ -16,8 +16,21 @@ export function generateStaticParams() {
   }));
 }
 
-export default function ProductDetailPage({ params }: PageProps) {
-  const product = mockMenu.find((p) => p.slug === params.slug);
+// Dinamik SEO ve Metadata (Sprint 5 kuralı)
+export async function generateMetadata({ params }: PageProps): Promise<import('next').Metadata> {
+  const resolvedParams = await params;
+  const product = mockMenu.find((p) => p.slug === resolvedParams.slug);
+  if (!product) return { title: 'Ürün Bulunamadı' };
+  
+  return {
+    title: `${product.name} | Lezzet Durağı`,
+    description: product.description,
+  };
+}
+
+export default async function ProductDetailPage({ params }: PageProps) {
+  const resolvedParams = await params;
+  const product = mockMenu.find((p) => p.slug === resolvedParams.slug);
 
   if (!product) {
     notFound();
@@ -32,9 +45,11 @@ export default function ProductDetailPage({ params }: PageProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
         {/* Sol Taraf: Büyük Görsel */}
         <div className="relative aspect-square md:aspect-[4/3] rounded-3xl overflow-hidden bg-slate-100 shadow-lg border border-slate-100">
-           <div className="absolute inset-0 bg-slate-200 flex items-center justify-center text-slate-400">
-             <span className="font-medium text-lg">{product.name} Büyük Görseli</span>
-           </div>
+           <img 
+             src={product.image} 
+             alt={product.name} 
+             className="absolute inset-0 w-full h-full object-cover"
+           />
         </div>
 
         {/* Sağ Taraf: Detaylar */}
@@ -53,6 +68,15 @@ export default function ProductDetailPage({ params }: PageProps) {
           </div>
 
           <h1 className="text-4xl font-extrabold text-slate-900 mb-2">{product.name}</h1>
+          <div className="flex items-center gap-2 mb-4">
+            {product.rating && (
+              <div className="flex items-center text-amber-500">
+                <Star className="w-5 h-5 fill-current" suppressHydrationWarning />
+                <span className="ml-1 font-bold text-lg">{product.rating.toFixed(1)}</span>
+                <span className="text-slate-400 ml-1 font-medium">({product.reviewCount || 0} değerlendirme)</span>
+              </div>
+            )}
+          </div>
           <p className="text-3xl font-bold text-slate-900 mb-6">{product.price} ₺</p>
 
           <div className="prose prose-slate mb-8">

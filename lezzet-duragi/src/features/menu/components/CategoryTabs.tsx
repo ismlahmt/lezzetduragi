@@ -1,6 +1,6 @@
 'use client';
 
-import { categories } from '@/shared/data/categories';
+import { mockCategories } from '@/shared/data/menu';
 import { MenuCategory } from '@/types';
 import { cn } from '@/lib/utils';
 
@@ -14,7 +14,7 @@ export function CategoryTabs({ activeCategory, onCategoryChange }: CategoryTabsP
     <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-slate-100 py-4 mb-8">
       <div className="container mx-auto px-4">
         <div className="flex overflow-x-auto hide-scrollbar gap-2 pb-2">
-          {categories.map((category) => (
+          {mockCategories.map((category) => (
             <button
               key={category.id}
               onClick={() => onCategoryChange(category.id)}
@@ -25,7 +25,7 @@ export function CategoryTabs({ activeCategory, onCategoryChange }: CategoryTabsP
                   : "bg-slate-100 text-slate-600 hover:bg-slate-200"
               )}
             >
-              {category.label}
+              {category.name}
             </button>
           ))}
         </div>

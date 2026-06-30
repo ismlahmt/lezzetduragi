@@ -17,7 +17,7 @@ export function QuantityStepper({ quantity, onChange }: QuantityStepperProps) {
         className="h-9 w-9 rounded-lg hover:bg-white hover:shadow-sm text-slate-700 transition-all"
         onClick={() => onChange(Math.max(0, quantity - 1))}
       >
-        <Minus className="h-4 w-4" />
+        <Minus className="h-4 w-4" suppressHydrationWarning />
       </Button>
       <span className="font-bold text-slate-900 w-6 text-center text-lg">{quantity}</span>
       <Button 
@@ -26,7 +26,7 @@ export function QuantityStepper({ quantity, onChange }: QuantityStepperProps) {
         className="h-9 w-9 rounded-lg hover:bg-white hover:shadow-sm text-slate-700 transition-all"
         onClick={() => onChange(quantity + 1)}
       >
-        <Plus className="h-4 w-4" />
+        <Plus className="h-4 w-4" suppressHydrationWarning />
       </Button>
     </div>
   );

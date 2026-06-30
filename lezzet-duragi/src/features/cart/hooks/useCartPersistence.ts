@@ -12,7 +12,7 @@ export function useCartPersistence() {
   const cartState = useAppSelector(state => state.cart);
   const isInitialized = useRef(false);
 
-  // Uygulama açıldığında localStorage'dan sepeti yükle
+
   useEffect(() => {
     try {
       const stored = localStorage.getItem(CART_STORAGE_KEY);
@@ -27,7 +27,7 @@ export function useCartPersistence() {
     }
   }, [dispatch]);
 
-  // Sepet her değiştiğinde localStorage'a kaydet
+
   useEffect(() => {
     if (isInitialized.current) {
       localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartState));

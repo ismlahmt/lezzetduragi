@@ -28,7 +28,7 @@ export default function CartPage() {
     <div className="container mx-auto px-4 py-8 max-w-5xl pb-32">
       <div className="flex items-center mb-8 gap-4">
         <Link href="/menu" className="p-3 bg-slate-100 rounded-2xl hover:bg-slate-200 transition-colors">
-          <ArrowLeft className="w-6 h-6 text-slate-700" />
+          <ArrowLeft className="w-6 h-6 text-slate-700" suppressHydrationWarning />
         </Link>
         <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">Sepetim</h1>
       </div>
@@ -36,7 +36,7 @@ export default function CartPage() {
       {isCartEmpty ? (
         <div className="flex flex-col items-center justify-center py-24 bg-white rounded-[2rem] border border-slate-100 shadow-sm">
           <div className="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mb-6">
-            <ShoppingBag className="w-12 h-12 text-slate-300" />
+            <ShoppingBag className="w-12 h-12 text-slate-300" suppressHydrationWarning />
           </div>
           <p className="text-2xl font-bold text-slate-800 mb-2">Sepetiniz Boş</p>
           <p className="text-lg text-slate-500 mb-8">Henüz sepetinize hiçbir lezzet eklemediniz.</p>
@@ -64,7 +64,7 @@ export default function CartPage() {
                         onClick={() => removeFromCart(item.productId)}
                         className="text-slate-400 hover:text-red-500 hover:bg-red-50 p-2 rounded-xl transition-all"
                       >
-                        <Trash2 className="w-5 h-5" />
+                        <Trash2 className="w-5 h-5" suppressHydrationWarning />
                       </button>
                     </div>
                     
