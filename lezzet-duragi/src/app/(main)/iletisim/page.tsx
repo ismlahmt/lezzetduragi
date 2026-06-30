@@ -18,7 +18,7 @@ export default function ContactPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-        {/* Sol Taraf: İletişim Bilgileri */}
+        
         <div className="space-y-6">
           <div className="flex items-start gap-5 p-8 bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
             <div className="p-4 bg-primary/10 rounded-2xl shrink-0">
@@ -66,9 +66,8 @@ export default function ContactPage() {
           </div>
         </div>
 
-        {/* Sağ Taraf: Harita */}
-        <div className="relative h-full min-h-[450px] lg:min-h-0 rounded-[2.5rem] overflow-hidden bg-slate-100 shadow-2xl border border-slate-200">
-          {/* Gerçek Google Maps iframe */}
+<div className="relative h-full min-h-[450px] lg:min-h-0 rounded-[2.5rem] overflow-hidden bg-slate-100 shadow-2xl border border-slate-200">
+          
           <iframe 
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3010.59837583713!2d28.9783589!3d41.0082376!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDHCsDAwJzI5LjYiTiAyOMKwNTgnNDIuMSJF!5e0!3m2!1str!2str!4v1631234567890!5m2!1str!2str" 
             width="100%" 

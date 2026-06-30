@@ -12,9 +12,8 @@ export const mockCategories: Category[] = [
 ];
 
 export const mockMenu: Product[] = [
-  // Çorbalar
-  {
-    id: 'c1',
+
+{ id: 'c1',
     categoryId: '1',
     name: 'Mercimek Çorbası',
     slug: 'mercimek-corbasi',
@@ -76,10 +75,8 @@ export const mockMenu: Product[] = [
     rating: 4.7,
     reviewCount: 237,
   },
-  
-  // Ana Yemekler
-  {
-    id: 'a1',
+
+{ id: 'a1',
     categoryId: '2',
     name: 'Kavurmalı Pilav',
     slug: 'kavurmali-pilav',
@@ -141,9 +138,7 @@ export const mockMenu: Product[] = [
     reviewCount: 492,
   },
 
-  // Kebaplar
-  {
-    id: 'k1',
+{ id: 'k1',
     categoryId: '3',
     name: 'Adana Kebap',
     slug: 'adana-kebap',
@@ -218,9 +213,7 @@ export const mockMenu: Product[] = [
     reviewCount: 470,
   },
 
-  // Burgerler
-  {
-    id: 'b1',
+{ id: 'b1',
     categoryId: '4',
     name: 'Klasik Cheeseburger',
     slug: 'cheeseburger',
@@ -283,9 +276,7 @@ export const mockMenu: Product[] = [
     spicyLevel: 2,
   },
 
-  // Pizzalar
-  {
-    id: 'p1',
+{ id: 'p1',
     categoryId: '5',
     name: 'Margherita',
     slug: 'margherita',
@@ -347,9 +338,7 @@ export const mockMenu: Product[] = [
     reviewCount: 23,
   },
 
-  // Salatalar
-  {
-    id: 's1',
+{ id: 's1',
     categoryId: '6',
     name: 'Çoban Salata',
     slug: 'coban-salata',
@@ -410,9 +399,7 @@ export const mockMenu: Product[] = [
     reviewCount: 29,
   },
 
-  // Tatlılar
-  {
-    id: 't1',
+{ id: 't1',
     categoryId: '7',
     name: 'Fıstıklı Baklava',
     slug: 'fistikli-baklava',
@@ -474,9 +461,7 @@ export const mockMenu: Product[] = [
     reviewCount: 244,
   },
 
-  // İçecekler
-  {
-    id: 'i1',
+{ id: 'i1',
     categoryId: '8',
     name: 'Yayık Ayran',
     slug: 'yayik-ayran',

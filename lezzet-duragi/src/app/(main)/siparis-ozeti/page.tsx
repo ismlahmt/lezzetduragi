@@ -16,7 +16,7 @@ export default function OrderSummaryPage() {
     setIsClient(true);
   }, []);
 
-  if (!isClient) return null; // Hydration önlemi
+  if (!isClient) return null; 
 
   if (cart.items.length === 0) {
     return (
@@ -27,8 +27,7 @@ export default function OrderSummaryPage() {
     );
   }
 
-  // Sipariş Mesajı Oluşturucu (Fotoğraf 9 / 10 Kuralları)
-  const generateWhatsAppMessage = () => {
+const generateWhatsAppMessage = () => {
     let msg = `*YENİ SİPARİŞ*\n\n`;
     msg += `*Sipariş Tipi:* ${cart.orderType.toUpperCase()}\n`;
     if (cart.orderType === 'masada') {

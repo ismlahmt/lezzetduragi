@@ -7,7 +7,6 @@ export const metadata: Metadata = {
   description: 'Taze malzemelerle hazırlanan nefis lezzetlerimizi inceleyin. Çorbalar, kebaplar, burgerler ve daha fazlası.',
 };
 
-// SSG yapılandırması (Fotoğraf 4'e uygun)
 export const revalidate = 3600; 
 
 export default function MenuPage() {

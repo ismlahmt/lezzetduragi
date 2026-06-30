@@ -47,7 +47,7 @@ export default function CartPage() {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-7 space-y-8">
-            {/* Ürün Listesi */}
+            
             <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden divide-y divide-slate-50">
               {cart.items.map((item) => (
                 <div key={item.productId} className="p-5 sm:p-6 flex flex-col sm:flex-row gap-5 items-start sm:items-center hover:bg-slate-50/50 transition-colors">
@@ -88,7 +88,7 @@ export default function CartPage() {
           </div>
 
           <div className="lg:col-span-5">
-            {/* Sipariş Özeti */}
+            
             <div className="bg-slate-900 text-white rounded-[2rem] p-8 shadow-2xl sticky top-8">
               <h3 className="text-2xl font-extrabold mb-8 border-b border-slate-700/50 pb-6">Sipariş Özeti</h3>
               <div className="space-y-4 mb-8 text-lg">

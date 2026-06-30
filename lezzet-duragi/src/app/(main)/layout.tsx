@@ -5,7 +5,7 @@ import { mockBusinessInfo } from '@/shared/data/business-info';
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-col min-h-screen bg-slate-50/50">
-      {/* Header */}
+      
       <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-xl border-b border-slate-100 shadow-sm">
         <div className="container mx-auto px-4 h-24 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-4 hover:opacity-80 transition-opacity">
@@ -23,18 +23,16 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
 
           <Link href="/sepet" className="relative p-4 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl transition-all hover:scale-105 hover:rotate-3 shadow-sm">
             <ShoppingBag className="w-6 h-6" suppressHydrationWarning />
-            {/* Sepet adedi indicator eklenebilir */}
+            
           </Link>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="flex-1">
+<main className="flex-1">
         {children}
       </main>
 
-      {/* Footer */}
-      <footer className="bg-slate-950 text-slate-400 py-16 mt-auto">
+<footer className="bg-slate-950 text-slate-400 py-16 mt-auto">
         <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-10 text-center md:text-left">
           <div className="space-y-4">
             <h3 className="text-white font-extrabold text-2xl flex items-center gap-3 justify-center md:justify-start">

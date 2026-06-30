@@ -9,7 +9,7 @@ export default function HomePage() {
 
   return (
     <div className="pb-32">
-      {/* Hero Section */}
+      
       <section className="bg-slate-900 text-white py-24 px-4 text-center relative overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-slate-900 to-slate-900"></div>
         <div className="relative z-10 max-w-4xl mx-auto">
@@ -26,8 +26,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Popüler Ürünler */}
-      <section className="container mx-auto px-4 mt-24">
+<section className="container mx-auto px-4 mt-24">
         <div className="flex justify-between items-end mb-12 border-b border-slate-200 pb-4">
           <div>
             <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">Öne Çıkanlar</h2>

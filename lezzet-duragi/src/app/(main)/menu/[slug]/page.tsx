@@ -9,14 +9,12 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-// SSG için generateStaticParams (Fotoğraf 4 ve 9 kuralı)
 export function generateStaticParams() {
   return mockMenu.map((product) => ({
     slug: product.slug,
   }));
 }
 
-// Dinamik SEO ve Metadata (Sprint 5 kuralı)
 export async function generateMetadata({ params }: PageProps): Promise<import('next').Metadata> {
   const resolvedParams = await params;
   const product = mockMenu.find((p) => p.slug === resolvedParams.slug);
@@ -43,7 +41,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
       </Link>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-        {/* Sol Taraf: Büyük Görsel */}
+        
         <div className="relative aspect-square md:aspect-[4/3] rounded-3xl overflow-hidden bg-slate-100 shadow-lg border border-slate-100">
            <img 
              src={product.image} 
@@ -52,8 +50,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
            />
         </div>
 
-        {/* Sağ Taraf: Detaylar */}
-        <div className="flex flex-col justify-center">
+<div className="flex flex-col justify-center">
           <div className="flex flex-wrap gap-2 mb-4">
             {product.isPopular && (
               <Badge className="bg-amber-500 hover:bg-amber-600 text-white border-none px-3 py-1 text-sm flex items-center gap-1.5">
@@ -83,8 +80,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
             <p className="text-lg text-slate-600 leading-relaxed">{product.description}</p>
           </div>
 
-          {/* Alerjen Bilgisi */}
-          {product.allergens && product.allergens.length > 0 && (
+{product.allergens && product.allergens.length > 0 && (
             <div className="mb-8 p-4 bg-orange-50 rounded-2xl border border-orange-100">
               <h3 className="text-sm font-bold text-orange-800 uppercase tracking-wider mb-2">Alerjen Bilgisi</h3>
               <div className="flex flex-wrap gap-2">
@@ -97,8 +93,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
             </div>
           )}
 
-          {/* Sepete Ekle CTA */}
-          <div className="mt-auto pt-8 border-t border-slate-100">
+<div className="mt-auto pt-8 border-t border-slate-100">
              <Button 
                 size="lg" 
                 className="w-full text-lg h-14 rounded-2xl shadow-xl hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300"

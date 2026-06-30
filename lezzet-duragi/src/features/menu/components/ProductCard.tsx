@@ -28,7 +28,7 @@ export function ProductCard({ product }: ProductCardProps) {
       "group relative flex flex-col rounded-2xl bg-white shadow-sm border border-slate-100 overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1",
       !isAvailable && "opacity-60 grayscale-[0.5]"
     )}>
-      {/* Resim Alanı */}
+      
       <div className="relative h-48 w-full bg-slate-100 overflow-hidden">
         <Link href={`/menu/${product.slug}`}>
           <div className="relative w-full h-full">
@@ -40,9 +40,8 @@ export function ProductCard({ product }: ProductCardProps) {
             />
           </div>
         </Link>
-        
-        {/* Rozetler */}
-        <div className="absolute top-3 left-3 flex flex-col gap-2">
+
+<div className="absolute top-3 left-3 flex flex-col gap-2">
           {product.isPopular && (
             <Badge className="bg-amber-500 hover:bg-amber-600 text-white shadow-md border-none flex items-center gap-1">
               <Star className="w-3 h-3 fill-current" suppressHydrationWarning /> Popüler
@@ -56,8 +55,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
       </div>
 
-      {/* İçerik Alanı */}
-      <div className="flex flex-col flex-grow p-4">
+<div className="flex flex-col flex-grow p-4">
         <div className="flex justify-between items-start mb-2">
           <Link href={`/menu/${product.slug}`} className="hover:text-slate-900 transition-colors">
             <h3 className="font-bold text-lg text-slate-800 line-clamp-1">{product.name}</h3>
@@ -78,8 +76,7 @@ export function ProductCard({ product }: ProductCardProps) {
           {product.description}
         </p>
 
-        {/* Sepete Ekle Butonu */}
-        <Button 
+<Button 
           onClick={handleAddToCart}
           className="w-full font-semibold rounded-xl transition-all duration-300"
           disabled={!isAvailable}

@@ -12,8 +12,7 @@ export function useCartPersistence() {
   const cartState = useAppSelector(state => state.cart);
   const isInitialized = useRef(false);
 
-
-  useEffect(() => {
+useEffect(() => {
     try {
       const stored = localStorage.getItem(CART_STORAGE_KEY);
       if (stored) {
@@ -27,8 +26,7 @@ export function useCartPersistence() {
     }
   }, [dispatch]);
 
-
-  useEffect(() => {
+useEffect(() => {
     if (isInitialized.current) {
       localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartState));
     }

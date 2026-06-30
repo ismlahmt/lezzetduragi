@@ -1,4 +1,4 @@
-// --- Menü Kategorileri ----------------------------------------------------
+
 export type MenuCategory = string;
 
 export interface Category {
@@ -7,7 +7,6 @@ export interface Category {
   slug: string;
 }
 
-// --- Ürün -----------------------------------------------------------------
 export interface Product {
   id: string;
   slug: string;
@@ -15,7 +14,7 @@ export interface Product {
   description: string;
   category?: MenuCategory;
   categoryId: string;
-  price: number;              // TL cinsinden
+  price: number;
   image: string;
   isAvailable: boolean;
   isPopular?: boolean;
@@ -25,12 +24,11 @@ export interface Product {
   reviewCount?: number;
 }
 
-// --- Sepet ----------------------------------------------------------------
 export interface CartItem {
   productId: string;
   product: Product;
   quantity: number;
-  note?: string;              // Örn: 'Acısız olsun'
+  note?: string;
 }
 
 export type OrderType = 'masada' | 'paket' | 'gel-al';
@@ -38,23 +36,21 @@ export type OrderType = 'masada' | 'paket' | 'gel-al';
 export interface Cart {
   items: CartItem[];
   orderType: OrderType;
-  tableNumber?: string;       // orderType === 'masada' ise zorunlu
+  tableNumber?: string;
   customerName?: string;
   customerPhone?: string;
   totalPrice: number;
 }
 
-// --- Sipariş Özeti / Yönlendirme ------------------------------------------
 export interface OrderSummary {
   cart: Cart;
-  createdAt: string;          // ISO 8601
-  whatsappMessage: string;    // Otomatik oluşturulan mesaj metni
+  createdAt: string;
+  whatsappMessage: string;
 }
 
-// --- İşletme Bilgisi ------------------------------------------------------
 export interface DaySchedule {
-  open: string;    // "10:00"
-  close: string;   // "23:00"
+  open: string;
+  close: string;
   isClosed?: boolean;
 }
 
@@ -68,7 +64,7 @@ export interface BusinessInfo {
   address: string;
   latitude: number;
   longitude: number;
-  phone: string;              // tel: yönlendirmesi için
-  whatsappNumber: string;     // wa.me yönlendirmesi için (E.164 formatı)
+  phone: string;
+  whatsappNumber: string;
   workingHours: WorkingHours;
 }
