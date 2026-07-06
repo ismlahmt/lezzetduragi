@@ -11,7 +11,9 @@ export function MenuClient({ initialProducts }: { initialProducts: Product[] }) 
   return (
     <>
       <CategoryTabs activeCategory={activeCategory} onCategoryChange={setActiveCategory} />
-      <ProductGrid products={filteredProducts} />
+      <div className="container mx-auto px-4 mt-12 pb-16">
+        <ProductGrid products={filteredProducts} />
+      </div>
     </>
   );
 }

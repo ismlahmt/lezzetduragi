@@ -9,10 +9,13 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { useDispatch } from 'react-redux';
+import { addOrder, Order } from '@/features/orders/store/ordersSlice';
 
 export default function OrderSummaryPage() {
   const { cart, clearCart } = useCart();
   const router = useRouter();
+  const dispatch = useDispatch();
   
   // TODO: Backend entegrasyonu
   const isAuthenticated = true;
@@ -57,100 +60,130 @@ export default function OrderSummaryPage() {
   const whatsappUrl = `https://wa.me/${mockBusinessInfo.whatsappNumber.replace(/[^0-9]/g, '')}?text=${generateWhatsAppMessage()}`;
 
   const handleCheckout = (isWhatsapp: boolean = false) => {
-    // TODO: Backend API ile siparişi veritabanına kaydetme işlemi eklenecek
     
+    const newOrder: Order = {
+      id: Math.random().toString(36).substring(2, 9).toUpperCase(),
+      items: cart.items,
+      totalPrice: cart.totalPrice,
+      status: 'bekliyor',
+      createdAt: new Date().toISOString(),
+      orderType: cart.orderType
+    };
+
+    dispatch(addOrder(newOrder));
+
     if (isWhatsapp) {
       window.open(whatsappUrl, '_blank');
     }
     
     clearCart();
-    toast.success('Sipariş isteği gönderildi (UI Modu)');
-    router.push('/profil');
+    toast.success('Sipariş başarıyla alındı!');
+    router.push('/profil?tab=orders');
   };
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-3xl pb-32">
-      <div className="text-center mb-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-        <div className="inline-flex items-center justify-center w-24 h-24 bg-green-100 rounded-full mb-6 shadow-sm">
-          <CheckCircle2 className="w-12 h-12 text-green-600" suppressHydrationWarning />
-        </div>
-        <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight mb-4">Sipariş Özeti</h1>
-        <p className="text-lg text-slate-500">Siparişinizi tamamlamak için bilgileri kontrol edin.</p>
+    <div className="min-h-screen bg-slate-50/30 pb-32 relative">
+      
+      {/* Decorative Dark Header Background */}
+      <div className="absolute top-0 left-0 w-full h-80 bg-slate-900 z-0 overflow-hidden rounded-b-[3rem]">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/20 via-slate-900 to-slate-900"></div>
       </div>
 
-      {!isAuthenticated && (
-        <div className="bg-amber-50 p-6 rounded-2xl border border-amber-200 text-center mb-8">
-          <h3 className="text-amber-800 font-bold text-lg mb-2">Giriş Yapmanız Gerekiyor</h3>
-          <p className="text-amber-700 mb-4">Siparişi onaylayabilmek ve sipariş takibi yapabilmek için lütfen giriş yapın.</p>
-          <Link href="/login" className={cn(buttonVariants({ variant: "default" }), "font-bold rounded-xl bg-amber-600 hover:bg-amber-700")}>
-            Hemen Giriş Yap
+      <div className="container mx-auto px-4 pt-16 relative z-10 max-w-3xl">
+        <div className="text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="inline-flex items-center justify-center w-24 h-24 bg-white/10 backdrop-blur-md rounded-3xl mb-6 shadow-2xl border border-white/20 transform -rotate-3 hover:rotate-0 transition-transform duration-500">
+            <CheckCircle2 className="w-12 h-12 text-primary" suppressHydrationWarning />
+          </div>
+          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight mb-4 drop-shadow-lg">Sipariş Özeti</h1>
+          <p className="text-lg text-slate-300 font-medium">Lütfen bilgilerinizi kontrol edip siparişinizi onaylayın.</p>
+        </div>
+
+        {!isAuthenticated && (
+          <div className="bg-white p-6 rounded-2xl shadow-xl shadow-amber-500/10 border-2 border-amber-400 text-center mb-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="text-left">
+              <h3 className="text-amber-600 font-black text-xl mb-1">Giriş Yapmanız Gerekiyor</h3>
+              <p className="text-slate-500 font-medium">Siparişi onaylayabilmek için lütfen giriş yapın.</p>
+            </div>
+            <Link href="/login" className={cn(buttonVariants({ variant: "default" }), "font-bold rounded-xl bg-amber-500 hover:bg-amber-600 text-white shadow-lg shrink-0 h-12 px-8")}>
+              Giriş Yap
+            </Link>
+          </div>
+        )}
+
+        {/* Receipt Card */}
+        <div className="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl shadow-slate-200/50 border border-slate-100 mb-8 animate-in fade-in slide-in-from-bottom-8 duration-700 relative overflow-hidden">
+          
+          <div className="absolute top-0 right-0 w-32 h-32 bg-slate-50 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
+
+          <div className="mb-10">
+            <h3 className="text-lg font-bold text-slate-400 uppercase tracking-wider mb-6">Sipariş Detayları</h3>
+            <div className="space-y-4 bg-slate-50 rounded-2xl p-6 border border-slate-100">
+              <div className="flex justify-between items-center py-1">
+                <span className="text-slate-500 font-medium">Sipariş Tipi</span>
+                <span className="font-bold text-slate-900 capitalize px-3 py-1 bg-white rounded-lg shadow-sm">{cart.orderType}</span>
+              </div>
+              {cart.orderType === 'masada' && (
+                <div className="flex justify-between items-center py-1">
+                  <span className="text-slate-500 font-medium">Masa Numarası</span>
+                  <span className="font-bold text-slate-900 text-xl px-3 py-1 bg-white rounded-lg shadow-sm">{cart.tableNumber}</span>
+                </div>
+              )}
+              {(user?.name || cart.customerName) && (
+                <div className="flex justify-between items-center py-1">
+                  <span className="text-slate-500 font-medium">Müşteri</span>
+                  <span className="font-bold text-slate-900">{user?.name || cart.customerName}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="mb-10">
+            <h3 className="text-lg font-bold text-slate-400 uppercase tracking-wider mb-6">Seçilen Lezzetler</h3>
+            <div className="space-y-5">
+              {cart.items.map(item => (
+                <div key={item.productId} className="flex justify-between items-center group">
+                  <div className="flex items-center gap-4">
+                    <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-orange-50 text-primary font-black text-sm group-hover:bg-primary group-hover:text-white transition-colors">
+                      {item.quantity}
+                    </span> 
+                    <span className="font-bold text-slate-800 text-lg">{item.product.name}</span>
+                  </div>
+                  <span className="font-black text-slate-900 text-lg">{item.quantity * item.product.price} ₺</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div className="flex justify-between items-end pt-8 border-t-2 border-dashed border-slate-200">
+            <span className="text-xl font-bold text-slate-500 uppercase tracking-wider">Genel Toplam</span>
+            <span className="text-5xl font-black text-primary drop-shadow-sm">{cart.totalPrice} ₺</span>
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row gap-5 animate-in fade-in slide-in-from-bottom-10 duration-700 delay-150">
+          <Button 
+            onClick={() => handleCheckout(false)}
+            className="flex-1 h-16 text-xl font-extrabold rounded-2xl shadow-[0_8px_30px_rgb(234,88,12,0.3)] hover:shadow-[0_8px_40px_rgb(234,88,12,0.5)] bg-primary hover:bg-primary/90 text-white transition-all hover:-translate-y-1"
+            disabled={!isAuthenticated}
+          >
+            <CheckCircle2 className="w-6 h-6 mr-3" /> Siparişi Onayla
+          </Button>
+          <Button 
+            onClick={() => handleCheckout(true)}
+            variant="outline"
+            className="flex-1 h-16 text-xl font-extrabold border-2 border-[#25D366] text-[#25D366] hover:bg-[#25D366] hover:text-white rounded-2xl shadow-lg transition-all hover:-translate-y-1"
+            disabled={!isAuthenticated}
+          >
+            <MessageCircle className="w-6 h-6 mr-3" /> WhatsApp'tan Onayla
+          </Button>
+        </div>
+        
+        <div className="mt-10 text-center">
+          <Link href="/sepet" className="inline-flex items-center text-slate-500 hover:text-slate-900 font-bold transition-colors">
+            <ArrowLeft className="w-5 h-5 mr-2" /> Sepete Dön ve Değiştir
           </Link>
         </div>
-      )}
-
-      <div className="bg-white rounded-[2rem] p-8 md:p-10 shadow-xl border border-slate-100 mb-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
-        <h3 className="text-2xl font-bold mb-6 border-b border-slate-100 pb-4">Detaylar</h3>
-        
-        <div className="space-y-4 mb-10 text-lg">
-          <div className="flex justify-between items-center py-2">
-            <span className="text-slate-500 font-medium">Sipariş Tipi</span>
-            <span className="font-bold text-slate-900 capitalize">{cart.orderType}</span>
-          </div>
-          {cart.orderType === 'masada' && (
-            <div className="flex justify-between items-center py-2">
-              <span className="text-slate-500 font-medium">Masa Numarası</span>
-              <span className="font-bold text-slate-900">{cart.tableNumber}</span>
-            </div>
-          )}
-          {(user?.name || cart.customerName) && (
-            <div className="flex justify-between items-center py-2">
-              <span className="text-slate-500 font-medium">Müşteri</span>
-              <span className="font-bold text-slate-900">{user?.name || cart.customerName}</span>
-            </div>
-          )}
-        </div>
-
-        <h3 className="text-2xl font-bold mb-6 border-b border-slate-100 pb-4">Ürünler</h3>
-        <div className="space-y-5 mb-10 text-lg">
-          {cart.items.map(item => (
-            <div key={item.productId} className="flex justify-between items-start border-b border-slate-50 last:border-0 pb-3 last:pb-0">
-              <div className="flex gap-3">
-                <span className="font-bold text-primary">{item.quantity}x</span> 
-                <span className="font-medium text-slate-800">{item.product.name}</span>
-              </div>
-              <span className="font-bold text-slate-900">{item.quantity * item.product.price} ₺</span>
-            </div>
-          ))}
-        </div>
-        
-        <div className="flex justify-between items-center pt-8 border-t-2 border-slate-100">
-          <span className="text-2xl font-bold text-slate-900">Genel Toplam</span>
-          <span className="text-4xl font-black text-primary">{cart.totalPrice} ₺</span>
-        </div>
-      </div>
-
-      <div className="flex flex-col sm:flex-row gap-5 animate-in fade-in slide-in-from-bottom-10 duration-700 delay-150">
-        <Button 
-          onClick={() => handleCheckout(false)}
-          className="flex-1 h-16 text-xl font-bold rounded-2xl shadow-lg transition-all"
-          disabled={!isAuthenticated}
-        >
-          <CheckCircle2 className="w-6 h-6 mr-3" /> Siparişi Onayla
-        </Button>
-        <Button 
-          onClick={() => handleCheckout(true)}
-          variant="outline"
-          className="flex-1 h-16 text-xl font-bold border-2 border-[#25D366] text-[#25D366] hover:bg-[#25D366] hover:text-white rounded-2xl transition-all"
-          disabled={!isAuthenticated}
-        >
-          <MessageCircle className="w-6 h-6 mr-3" /> WhatsApp'tan Onayla
-        </Button>
-      </div>
-      
-      <div className="mt-10 text-center">
-        <Link href="/menu" className="inline-flex items-center text-slate-500 hover:text-slate-900 font-semibold transition-colors">
-          <ArrowLeft className="w-5 h-5 mr-2" /> Menüye Dön
-        </Link>
       </div>
     </div>
   );
