@@ -1,6 +1,7 @@
 import { mockMenu } from '@/shared/data/menu';
 import { MenuClient } from '@/features/menu/components/MenuClient';
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'Menü | Lezzet Durağı',
@@ -17,7 +18,9 @@ export default function MenuPage() {
         <p className="text-lg text-slate-500">En taze malzemelerle hazırlanan eşsiz lezzetlerimizi keşfedin.</p>
       </div>
       
-      <MenuClient initialProducts={mockMenu} />
+      <Suspense fallback={<div className="text-center py-20">Yükleniyor...</div>}>
+        <MenuClient initialProducts={mockMenu} />
+      </Suspense>
     </div>
   );
 }
