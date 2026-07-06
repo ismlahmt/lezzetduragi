@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import { ShoppingBag, User } from 'lucide-react';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '@/shared/store';
 
 export function HeaderActions() {
-  // TODO: Backend entegrasyonu (Kullanıcı girişi kontrolü eklenecek)
-  const isAuthenticated = false; 
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
   return (
     <div className="flex items-center gap-3">
@@ -15,7 +16,7 @@ export function HeaderActions() {
           <span className="hidden sm:inline">Kullanıcı</span>
         </Link>
       ) : (
-        <Link href="/login" className="flex items-center gap-2 p-3 bg-primary hover:bg-primary/90 text-white rounded-2xl transition-all shadow-sm shadow-primary/30 font-semibold">
+        <Link href="/login" className="flex items-center gap-2 p-3 bg-primary hover:bg-primary/90 text-white rounded-2xl transition-all shadow-sm shadow-primary/30 font-semibold cursor-pointer">
           <User className="w-5 h-5" suppressHydrationWarning />
           <span className="hidden sm:inline">Giriş Yap</span>
         </Link>

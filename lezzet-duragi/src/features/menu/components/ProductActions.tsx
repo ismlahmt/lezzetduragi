@@ -2,18 +2,24 @@
 
 import { useCart } from '@/features/cart/hooks/useCart';
 import { Product } from '@/types';
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Heart } from 'lucide-react';
 import { toast } from 'sonner';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '@/shared/store';
+import { toggleFavorite } from '@/features/favorites/store/favoritesSlice';
 
 interface ProductActionsProps {
   product: Product;
 }
 
 export function ProductActions({ product }: ProductActionsProps) {
+  const dispatch = useDispatch();
   const { addToCart } = useCart();
-  const [isFavorite, setIsFavorite] = useState(false);
+  
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const favoriteIds = useSelector((state: RootState) => state.favorites.productIds);
+  const isFavorite = favoriteIds.includes(product.id);
 
   const handleAddToCart = () => {
     addToCart(product, 1);
@@ -21,8 +27,12 @@ export function ProductActions({ product }: ProductActionsProps) {
   };
 
   const handleToggleFavorite = () => {
-    // TODO: Backend API
-    setIsFavorite(!isFavorite);
+    if (!isAuthenticated) {
+      toast.error('Favorilere eklemek için giriş yapmalısınız.');
+      return;
+    }
+    
+    dispatch(toggleFavorite(product.id));
     toast.success(!isFavorite ? 'Favorilere eklendi!' : 'Favorilerden çıkarıldı');
   };
 

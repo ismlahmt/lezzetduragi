@@ -1,26 +1,41 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { User, Heart, ShoppingBag, LogOut, Package, Clock, MapPin, ChevronRight, CheckCircle2 } from 'lucide-react';
 import { mockMenu } from '@/shared/data/menu';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '@/shared/store';
+import { logout } from '@/features/auth/store/authSlice';
 
 export default function ProfilePage() {
   const router = useRouter();
+  const dispatch = useDispatch();
   
-  // TODO: Backend entegrasyonu (Mock UI durumu)
-  const isAuthenticated = true;
-  const user = { name: 'Kullanıcı', email: 'kullanici@mail.com', phone: '0555 555 5555' };
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const authUser = useSelector((state: RootState) => state.auth.user);
+  const favoriteIds = useSelector((state: RootState) => state.favorites.productIds);
+  
+  const user = authUser || { name: 'Misafir', email: '', phone: '' };
   
   const [activeTab, setActiveTab] = useState<'favorites' | 'orders'>('favorites');
 
-  if (!isAuthenticated) return null;
+  if (!isAuthenticated) {
+    if (typeof window !== 'undefined') {
+      router.push('/');
+    }
+    return null;
+  }
 
-  // Placeholder data
-  const favoriteProducts = mockMenu.slice(0, 2);
+  const favoriteProducts = mockMenu.filter(product => favoriteIds.includes(product.id));
   const userOrders: any[] = [];
+
+  const handleLogout = () => {
+    dispatch(logout());
+    router.push('/');
+  };
 
   return (
     <div className="container mx-auto px-4 py-12 max-w-5xl">
@@ -38,7 +53,7 @@ export default function ProfilePage() {
             <Button 
               variant="outline" 
               className="w-full text-red-500 hover:text-red-600 hover:bg-red-50 border-red-100 font-semibold"
-              onClick={() => router.push('/')}
+              onClick={handleLogout}
             >
               <LogOut className="w-4 h-4 mr-2" />
               Çıkış Yap
@@ -91,7 +106,7 @@ export default function ProfilePage() {
                           <h4 className="font-bold text-slate-800">{product.name}</h4>
                           <p className="text-primary font-black mt-1">{product.price} ₺</p>
                         </div>
-                        <Link href="/menu">
+                        <Link href={`/menu/${product.slug}`}>
                           <Button variant="outline" size="sm">İncele</Button>
                         </Link>
                       </div>
