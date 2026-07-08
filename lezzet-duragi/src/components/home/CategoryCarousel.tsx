@@ -4,10 +4,10 @@ import React, { useCallback } from 'react';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import useEmblaCarousel from 'embla-carousel-react';
-import { MenuCategoryDef } from '@/types';
+import { Category } from '@/types';
 
 interface CategoryCarouselProps {
-  categories: MenuCategoryDef[];
+  categories: Category[];
 }
 
 export function CategoryCarousel({ categories }: CategoryCarouselProps) {

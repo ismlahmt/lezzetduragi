@@ -26,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="tr" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} min-h-full flex flex-col antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} min-h-full flex flex-col antialiased font-sans`}>
         <ReduxProvider>
           {children}
           <Toaster />

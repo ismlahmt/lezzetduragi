@@ -68,6 +68,8 @@ export default function RegisterPage() {
               <input
                 type="email"
                 required
+                pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
+                title="Lütfen geçerli bir e-posta adresi giriniz (örn: ornek@mail.com)"
                 className="w-full p-4 rounded-2xl border-2 border-slate-100 bg-slate-50 focus:bg-white focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all font-medium text-slate-700"
                 placeholder="ornek@mail.com"
                 value={email}
@@ -79,6 +81,9 @@ export default function RegisterPage() {
               <input
                 type="password"
                 required
+                minLength={8}
+                pattern="(?=.*[A-Z])(?=.*\d).+"
+                title="Şifreniz en az 8 karakter olmalı, en az 1 büyük harf ve 1 rakam içermelidir."
                 className="w-full p-4 rounded-2xl border-2 border-slate-100 bg-slate-50 focus:bg-white focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all font-medium text-slate-700"
                 placeholder="••••••••"
                 value={password}

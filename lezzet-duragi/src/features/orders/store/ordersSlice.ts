@@ -16,7 +16,7 @@ export interface Order {
   totalPrice: number;
   status: 'bekliyor' | 'tamamlandı';
   createdAt: string;
-  orderType: 'masada' | 'gelal' | 'paket';
+  orderType: 'masada' | 'gel-al' | 'paket';
 }
 
 interface OrdersState {

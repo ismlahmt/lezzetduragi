@@ -19,13 +19,14 @@ export default function LoginPage() {
     e.preventDefault();
 
     // Frontend Mock Auth Simulation
-    // In a real app, this goes to the backend: axios.post('/api/auth/login', { email, password })
-    if (email === 'test@lezzetduragi.com' && password === '123456') {
-      dispatch(login({ id: 'user_1', name: 'Test Kullanıcısı' }));
+    if (email && password) {
+      const mockName = email.split('@')[0];
+      const capitalizedName = mockName.charAt(0).toUpperCase() + mockName.slice(1);
+      dispatch(login({ id: 'user_1', name: capitalizedName }));
       toast.success('Giriş başarılı!');
       router.push('/'); // Go to homepage
     } else {
-      toast.error('E-posta veya şifre hatalı! (Test için: test@lezzetduragi.com / 123456)');
+      toast.error('Lütfen e-posta ve şifrenizi giriniz.');
     }
   };
 
@@ -53,6 +54,8 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full p-4 rounded-2xl border-2 border-slate-100 bg-slate-50 focus:bg-white focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all font-medium text-slate-700"
                 placeholder="E-posta adresiniz"
+                pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
+                title="Lütfen geçerli bir e-posta adresi giriniz (örn: ornek@mail.com)"
                 required
               />
             </div>
@@ -65,6 +68,9 @@ export default function LoginPage() {
                 className="w-full p-4 rounded-2xl border-2 border-slate-100 bg-slate-50 focus:bg-white focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all font-medium text-slate-700"
                 placeholder="••••••••"
                 required
+                minLength={8}
+                pattern="(?=.*[A-Z])(?=.*\d).+"
+                title="Şifreniz en az 8 karakter olmalı, en az 1 büyük harf ve 1 rakam içermelidir."
               />
             </div>
             
@@ -73,7 +79,7 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <div className="mt-8 text-center">
+          <div className="mt-8 text-center pt-6 border-t border-slate-100">
             <p className="text-slate-500 font-medium text-sm">
               Hesabın yok mu?{' '}
               <Link href="/register" className="text-primary font-bold hover:underline underline-offset-4">
@@ -82,10 +88,6 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-slate-100 text-center text-sm text-slate-500">
-            <p className="mb-1">Test Hesabı ile Giriş:</p>
-            <p className="font-bold text-slate-700 bg-slate-50 py-2 px-4 rounded-xl inline-block border border-slate-200">test@lezzetduragi.com / 123456</p>
-          </div>
         </div>
       </div>
     </div>

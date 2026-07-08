@@ -12,6 +12,8 @@ export const mockBusinessInfo: BusinessInfo = {
     thu: { open: "09:00", close: "23:00" },
     fri: { open: "09:00", close: "00:00" },
     sat: { open: "10:00", close: "00:00" },
-    sun: { open: "10:00", close: "22:00" },
-  }
+    sun: { open: '11:00', close: '22:00' }
+  },
+  latitude: 41.0082,
+  longitude: 28.9784
 };

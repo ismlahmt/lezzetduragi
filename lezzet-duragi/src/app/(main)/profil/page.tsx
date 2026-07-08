@@ -1,15 +1,23 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { User, Heart, ShoppingBag, LogOut, Package, Clock, MapPin, ChevronRight, CheckCircle2 } from 'lucide-react';
+import { User, Heart, ShoppingBag, LogOut, Package, Clock, MapPin, ChevronRight, CheckCircle2, Edit2, Check, X } from 'lucide-react';
 import { mockMenu } from '@/shared/data/menu';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/shared/store';
-import { logout } from '@/features/auth/store/authSlice';
+import { logout, updateProfile } from '@/features/auth/store/authSlice';
 import { cn } from '@/lib/utils';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -24,6 +32,32 @@ export default function ProfilePage() {
   const user = authUser || { name: 'Misafir', email: '', phone: '' };
   
   const [activeTab, setActiveTab] = useState<'favorites' | 'orders'>('favorites');
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [editNameValue, setEditNameValue] = useState(user.name);
+
+  useEffect(() => {
+    if (user.name) setEditNameValue(user.name);
+  }, [user.name]);
+
+  const handleSaveName = () => {
+    if (editNameValue.trim()) {
+      dispatch(updateProfile({ name: editNameValue.trim() }));
+    }
+    setIsEditingName(false);
+  };
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        dispatch(updateProfile({ avatar: reader.result as string }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   useEffect(() => {
     const tab = searchParams.get('tab');
@@ -69,10 +103,77 @@ export default function ProfilePage() {
             <div className="bg-white/95 backdrop-blur-xl rounded-[2.5rem] p-6 shadow-2xl shadow-slate-200/50 border border-white text-center relative overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-br from-primary to-amber-500"></div>
               
-              <div className="w-28 h-28 bg-white rounded-3xl flex items-center justify-center mx-auto mb-4 relative z-10 shadow-xl border-[6px] border-white mt-12 transform -rotate-6 hover:rotate-0 transition-transform duration-500">
-                <User className="w-12 h-12 text-primary" />
+              <div 
+                className="w-28 h-28 bg-white rounded-3xl flex items-center justify-center mx-auto mb-4 relative z-10 shadow-xl border-[6px] border-white mt-12 transform -rotate-6 hover:rotate-0 hover:scale-105 transition-all duration-500 cursor-pointer overflow-hidden group"
+                onClick={() => fileInputRef.current?.click()}
+                title="Profil Fotoğrafını Değiştir"
+              >
+                {user.avatar ? (
+                  <img src={user.avatar} alt="Profile" className="w-full h-full object-cover" />
+                ) : (
+                  <User className="w-12 h-12 text-primary group-hover:scale-110 transition-transform" />
+                )}
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <Edit2 className="w-6 h-6 text-white" />
+                </div>
               </div>
-              <h2 className="text-2xl font-black text-slate-800">{user.name}</h2>
+              <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={handleFileChange} />
+
+              
+              <div className="flex items-center justify-center gap-2 mb-2 group">
+                <h2 className="text-2xl font-black text-slate-800">{user.name}</h2>
+                <Dialog open={isEditingName} onOpenChange={(open) => {
+                  setIsEditingName(open);
+                  if (open) setEditNameValue(user.name);
+                }}>
+                  <DialogTrigger 
+                    className="text-slate-400 hover:text-primary transition-all hover:scale-110"
+                    title="İsmi Düzenle"
+                  >
+                    <Edit2 className="w-4 h-4" />
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-md border border-white/50 shadow-[0_20px_80px_-15px_rgba(234,88,12,0.3)] ring-1 ring-primary/20 rounded-[2.5rem] p-8 md:p-10 bg-white/95 backdrop-blur-2xl font-sans">
+                    <DialogHeader className="mb-8 space-y-2">
+                      <DialogTitle className="text-3xl font-black text-slate-800 text-center tracking-tight">İsmini Düzenle</DialogTitle>
+                      <p className="text-center text-slate-500 font-medium text-sm md:text-base">Profilinde ve siparişlerinde görünecek adını buradan güncelleyebilirsin.</p>
+                    </DialogHeader>
+                    
+                    <div className="space-y-3 mb-10">
+                      <label className="text-base font-bold text-slate-700 ml-1">Yeni Ad Soyad</label>
+                      <div className="relative group">
+                        <User className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-400 group-focus-within:text-primary transition-colors" />
+                        <input
+                          type="text"
+                          value={editNameValue}
+                          onChange={(e) => setEditNameValue(e.target.value)}
+                          className="w-full pl-14 pr-5 py-5 rounded-2xl border-2 border-slate-100 bg-slate-50 focus:bg-white focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all font-bold text-lg text-slate-800 placeholder:text-slate-400"
+                          onKeyDown={(e) => e.key === 'Enter' && handleSaveName()}
+                          placeholder="Örn: Ahmet Yılmaz"
+                          autoFocus
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex gap-4 w-full">
+                      <Button 
+                        type="button"
+                        className="flex-1 rounded-2xl h-16 font-black text-lg bg-slate-900 text-white hover:bg-red-500 shadow-md hover:shadow-[0_10px_30px_rgba(239,68,68,0.4)] transition-all duration-300 hover:-translate-y-1" 
+                        onClick={() => setIsEditingName(false)}
+                      >
+                        Vazgeç
+                      </Button>
+                      <Button 
+                        type="button"
+                        className="flex-1 rounded-2xl h-16 font-black text-lg bg-slate-900 text-white hover:bg-emerald-500 shadow-md hover:shadow-[0_10px_30px_rgba(16,185,129,0.4)] transition-all duration-300 hover:-translate-y-1" 
+                        onClick={handleSaveName}
+                      >
+                        Kaydet
+                      </Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              
               <p className="text-sm text-slate-500 mb-8 font-medium">{user.email}</p>
               
               <Button 
