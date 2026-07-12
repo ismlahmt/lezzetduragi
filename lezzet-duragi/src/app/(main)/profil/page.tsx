@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -19,7 +19,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 
-export default function ProfilePage() {
+function ProfilePageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ export default function ProfilePage() {
   const favoriteIds = useSelector((state: RootState) => state.favorites.productIds);
   const userOrders = useSelector((state: RootState) => state.orders.orders);
   
-  const user = authUser || { name: 'Misafir', email: '', phone: '' };
+  const user = authUser || { name: 'Misafir', email: '', phone: '', avatar: undefined };
   
   const [activeTab, setActiveTab] = useState<'favorites' | 'orders'>('favorites');
   const [isEditingName, setIsEditingName] = useState(false);
@@ -326,5 +326,13 @@ export default function ProfilePage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ProfilePage() {
+  return (
+    <Suspense fallback={<div>Yükleniyor...</div>}>
+      <ProfilePageContent />
+    </Suspense>
   );
 }
